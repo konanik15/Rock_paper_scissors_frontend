@@ -1,54 +1,29 @@
 <script>
-	import { onMount } from 'svelte';
-	import io from 'socket.io-client';
+    import Lobby from '../components/lobbyComponents/Lobby.svelte';
+    import LobbyForm from '../components/lobbyComponents/LobbyForm.svelte';
+    import Logout from '../components/loginComponents/Logout.svelte';
+    import Login from '../components/loginComponents/Login.svelte';
+    import {tokenStore} from '../hooks/auth' ;
+    let lobbyFormShow = false;    
 
-	let playerMove = '';
-	let opponentMove = '';
-	const moves = ['rock', 'paper', 'scissors'];
+    
 
-    var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2dpdGh1Yi5jb20vTmV0ZXJwaWxhL1JvY2tfcGFwZXJfc2Npc3NvcnNfYmFja2VuZCIsInN1YiI6InVzZXIxIiwiaWF0IjoxNjczODk2MTYwfQ.HZXhu7PLqVHY-a8mwdoWXW6693Ez5KHOjX7jSizn4TQ';
-  
 
-	function makeMove(move) {
-		if (playerMove === '') playerMove = move;
-	}
+    function showLobbyForm(){
+        lobbyFormShow = true;
+    }
 
-	function getLobbies() {
-		return fetch('http://localhost:8080/lobby/').then((res) => res.json());
-	}
-
-	const promise = getLobbies();
-	let socket = null;
-
-	// onMount(() => { socket.on("connect", () => console.log("Im connected to Gateway"))})
 </script>
-
-<div>
-	<h1>Welcome to Game</h1>
-	{#each moves as move}
-		<button on:click={() => makeMove(move)}>{move}</button>
-	{/each}
+<div style="display:grid;min-height:100vh;place-items:center;">
+{#if $tokenStore !== null}
+	<Lobby/>
+    {#if lobbyFormShow === false}
+    <button on:click={showLobbyForm}>CreateLobby</button>
+    <Logout/>
+    {:else}
+    <LobbyForm/>
+    {/if}
+{:else}
+    <Login/>    
+{/if}
 </div>
-<br />
-<span>You chosed : {playerMove} </span>
-<br />
-<span>Your opponent chosed : {opponentMove}</span>
-{#await promise}
-	"Waiting for lobbies"
-{:then lobbies}
-	<ul>
-		{#each lobbies as lobby}
-			<li>
-				<span>{lobby._id}</span>
-				<span>{lobby.name}</span>
-				<button
-					on:click={() => {
-						socket = new WebSocket('ws://localhost:8080/lobby/' + lobby._id+ '?token=' + token);
-					}}
-				>
-					Join Lobby
-				</button>
-			</li>
-		{/each}
-	</ul>
-{/await}
