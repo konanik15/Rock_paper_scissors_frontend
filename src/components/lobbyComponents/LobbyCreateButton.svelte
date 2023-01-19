@@ -1,9 +1,5 @@
 <script>
+	function handleCreateLobby() {}
+</script>
 
-    function handleCreateLobby(){
-        
-    }
-    
-    </script>
-    
-    <button on:click={handleCreateLobby}>Create Button</button>
+<button on:click={handleCreateLobby}>Create Button</button>

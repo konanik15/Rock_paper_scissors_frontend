@@ -23,7 +23,9 @@
 	"type": "module",
 	"dependencies": {
 		"axios": "^1.2.3",
+		"papercss": "^1.9.1",
 		"socket.io-client": "^4.5.4",
+		"spaper": "^1.0.0",
 		"svelte-spa-router": "^3.3.0"
 	}
 }
