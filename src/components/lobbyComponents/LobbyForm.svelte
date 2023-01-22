@@ -13,7 +13,7 @@
 			},
 			{
 				headers: {
-					authorization: $tokenStore
+					authorization: $tokenStore.token
 				}
 			}
 		);

@@ -17,8 +17,33 @@
     }
 </script>
 
-<div style="display:grid;min-height:100vh;place-items:center;">
-	{#if $tokenStore !== null}
+<nav class="border fixed split-nav">
+	<div class="nav-brand">
+	  <h3><a href="#">Rock Paper Scissors</a></h3>
+	</div>
+	<div class="collapsible">
+	  <input id="collapsible1" type="checkbox" name="collapsible1">
+	  <label for="collapsible1">
+		<div class="bar1"></div>
+		<div class="bar2"></div>
+		<div class="bar3"></div>
+	  </label>
+	  <div class="collapsible-body">
+		<ul class="inline">
+			{#if $tokenStore}
+			<li>Logged as : {$tokenStore?.username} </li>
+			{/if}
+		  <li><a href="#">Authors</a></li>
+		  <li><a href="#">About</a></li>
+		  <!-- svelte-ignore security-anchor-rel-noreferrer -->
+		  <li><a href="https://github.com/Neterpila/Rock_paper_scissors_backend" target="_blank">Github</a></li>
+		</ul>
+	  </div>
+	</div>
+  </nav>
+
+<div style="min-height:100vh;padding:2rem;margin-top:68px;">
+	{#if $tokenStore}
 		<Lobby />
 		{#if lobbyFormShow === false}
 			<Button type="primary" on:click={showLobbyForm}>CreateLobby</Button>

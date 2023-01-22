@@ -1,6 +1,5 @@
 <script>
 	import axios from 'axios';
-	import { push } from 'svelte-spa-router';
 	import { tokenStore } from '../../hooks/auth';
 	import 'papercss/dist/paper.min.css';
 	import { Button, Form, Input, Alert } from 'spaper';
@@ -22,10 +21,14 @@
 			);
 			if (response.status === 200) {
 				console.log(response);
-				$tokenStore = response.data.access_token;
+				$tokenStore = {
+					username,
+					token: response.data.access_token
+				}
+				// setUserData(username,response.data.access_token);
 			}
 		} catch (e) {
-			console.log('Critical Error');
+			console.log('Critical Error' + e );
 		}
 	};
 
@@ -52,9 +55,9 @@
 	<Form on:submit>
 		<div class="paper container">
 			<h1 class="h3 mb-3 fw-normal">Rock Paper Scissors</h1>
-				<Input bind:value={username} placeholder="Username" label="Username" />
+				<Input required bind:value={username} placeholder="Username" label="Username" />
 				<br />
-				<Input bind:value={password} placeholder="Password" label="Password" type="password" />
+				<Input required bind:value={password} placeholder="Password" label="Password" type="password" />
 				<br />
 
 				<Button on:click={submit} color="blue" type="primary">Login</Button>
